@@ -1,61 +1,19 @@
 name: Java CI
 
 on:
+  release:
+    types: [created]
   push:
     branches:
       - main
       - 'feature/*'
+permissions:
+  contents: read
+  issues: read
+  checks: write
+  pull-requests: write
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
-
-    steps:
-    - name: Set up JDK 8
-      uses: actions/setup-java@v2
-      with:
-        java-version: '8'
-        distribution: 'adopt'
-
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Build with Maven
-      run: mvn --batch-mode --update-snapshots package
-
-    # Add additional steps if needed
-    # - name: Run Tests
-    #   run: mvn test
-
-    # - name: Deploy to production
-    #   run: ./deploy.sh
-    #   env:
-    #     API_KEY: ${{ secrets.PRODUCTION_API_KEY }}
-
-    # Publish unit test results
-    - name: Publish Unit Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
-      with:
-        files: target/**/*.xml
-
-    # Upload build artifact
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2.2.4
-      with:
-        name: my-app-1.0
-        path: target/*
-
-    # Install Docker
-    - name: Install Docker
-      uses: docker/setup-buildx-action@v1
-      id: buildx
-      with:
-        install: true
-
-    # Build Docker image
-    - name: Docker build
-      run: |
-        docker build .
-
