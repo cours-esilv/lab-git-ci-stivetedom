@@ -23,7 +23,7 @@ jobs:
     - name: Build with Maven
       run: mvn --batch-mode --update-snapshots package
 
-    # Ajoutez des étapes supplémentaires selon vos besoins, par exemple :
+    # Add additional steps if needed
     # - name: Run Tests
     #   run: mvn test
 
@@ -31,3 +31,11 @@ jobs:
     #   run: ./deploy.sh
     #   env:
     #     API_KEY: ${{ secrets.PRODUCTION_API_KEY }}
+
+    # Publish unit test results
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: target/**/*.xml
+
