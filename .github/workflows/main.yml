@@ -31,10 +31,15 @@ jobs:
     - name: Build with Maven
       run: mvn --batch-mode --update-snapshots package
 
-    # ... (other steps)
-
     - name: Publish Unit Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always() # This ensures that the step runs even if previous steps fail
       with:
         files: target/**/*.xml
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2.2.4
+      with:
+        name: my-app-1.0
+        path: target/*
+
